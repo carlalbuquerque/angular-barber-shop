@@ -1,7 +1,5 @@
 # 📌 Projeto Frontend - Angular 19
 
-# 📌 Projeto Frontend - Angular 19
-
 ## 🚀 Sobre o Projeto
 Este é o **frontend** do sistema **Barber Shop**, desenvolvido em **Angular 19** para fornecer uma interface intuitiva, dinâmica e responsiva para os usuários. O projeto foi criado como parte de uma atividade prática proposta durante um **bootcamp da DIO**, com o objetivo de consolidar conhecimentos em **desenvolvimento frontend**, **integração com APIs** e **boas práticas de arquitetura de software**. O sistema permite uma experiência de usuário fluida e acessível para agendamento de serviços de barbearia.
 
