@@ -1,8 +1,8 @@
 import { Observable } from "rxjs";
-import { saveScheduleResquest, ScheduleAppointementMonthResponse, saveScheduleResponse } from "./schedule.models";
+import {  ScheduleAppointementMonthResponse, SaveScheduleResponse, SaveScheduleResquest } from "./schedule.models";
 
 export interface IScheduleService{
-    save(request: saveScheduleResquest): Observable<saveScheduleResponse>
+    save(request: SaveScheduleResquest): Observable<SaveScheduleResponse>
 
     delete(id: number): Observable<void>
 

@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ScheduleCalendarComponent } from '../components/schedule-calendar/schedule-calendar.component';
 import { Subscription } from 'rxjs';
-import { ClientScheduleAppointmentModel, ScheduleAppointementMonthModel, saveScheduleModel, selectClientModel } from '../schedule.models';
+import { ClientScheduleAppointmentModel, SaveScheduleModel, ScheduleAppointementMonthModel, SelectClientModel } from '../schedule.models';
 import { SERVICES_TOKEN } from '../../services/service.token';
 import { IScheduleService } from '../../services/api-client/schedules/ischedules.service';
 import { IClientService } from '../../services/api-client/clients/iclients.service';
@@ -9,7 +9,7 @@ import { SchedulesService } from '../../services/api-client/schedules/schedules.
 import { ClientsService } from '../../services/api-client/clients/clients.service';
 import { ISnackbarManagerService } from '../../services/isnackbar-manager.service';
 import { SnackbarManagerService } from '../../services/snackbar-manager.service';
-import { saveScheduleResquest } from '../../services/api-client/schedules/schedule.models';
+import { SaveScheduleResquest,  } from '../../services/api-client/schedules/schedule.models';
 
 @Component({
   selector: 'app-schedules-month',
@@ -28,19 +28,19 @@ export class SchedulesMonthComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = []
   private selectedDate?: Date
 
-  monthSchedule!:ScheduleAppointementMonthModel
-  clients: selectClientModel[] = []
+  monthSchedule!: ScheduleAppointementMonthModel
+  clients: SelectClientModel[] = []
   
 
   constructor(
     @Inject(SERVICES_TOKEN.HTTP.SCHEDULE) private readonly httpService: IScheduleService,
-    @Inject(SERVICES_TOKEN.HTTP.CLIENT) private readonly clienthttpservice: IClientService,
+    @Inject(SERVICES_TOKEN.HTTP.CLIENT) private readonly clientHttpService: IClientService,
     @Inject(SERVICES_TOKEN.SNACKBAR)  private readonly snackbarManage: ISnackbarManagerService
   ){ }
   
   ngOnInit(): void {
     this.fetchSchedules(new Date());
-    this.subscriptions.push(this.clienthttpservice.list().subscribe(data=>this.clients = data))
+    this.subscriptions.push(this.clientHttpService.list().subscribe(data => this.clients = data))
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach(s => s.unsubscribe)
@@ -51,13 +51,24 @@ export class SchedulesMonthComponent implements OnInit, OnDestroy {
     this.fetchSchedules(date)
   }
 
-  onConfirmDelete(schedule: ClientScheduleAppointmentModel){
-    this.subscriptions.push(this.httpService.delete(schedule.id).subscribe())
-  }
+  onConfirmDelete(schedule: ClientScheduleAppointmentModel) {
+    if (!schedule.id || schedule.id === -1) {
+        console.error("Erro: ID de agendamento inválido.");
+        return;
+    }
+    this.subscriptions.push(
+        this.httpService.delete(schedule.id).subscribe({
+            next: () => console.log("Agendamento deletado com sucesso!"),
+            error: (err) => console.error("Erro ao deletar agendamento:", err)
+        })
+    );
+}
 
-  onScheduleClient(schedule: saveScheduleModel){
+
+
+  onScheduleClient(schedule: SaveScheduleModel){
     if(schedule.startAt && schedule.endAt && schedule.clientId){
-      const request: saveScheduleResquest = {startAt: schedule.startAt, endAt: schedule.endAt, clientId: schedule.clientId}
+      const request: SaveScheduleResquest = {startAt: schedule.startAt, endAt: schedule.endAt, clientId: schedule.clientId}
       this.subscriptions.push(this.httpService.save(request).subscribe(()=> { 
         this.snackbarManage.show('Agendamento realizado com sucesso')
         if(this.selectedDate){
