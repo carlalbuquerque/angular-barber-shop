@@ -1,13 +1,12 @@
 # 📌 Projeto Frontend - Angular 19
 
 ## 🚀 Sobre o Projeto
-Este é o frontend do sistema [Nome do Projeto], desenvolvido em Angular 19 para fornecer uma interface intuitiva e responsiva para os usuários.
+Este é o frontend do sistema baber shop, desenvolvido em Angular 19 para fornecer uma interface intuitiva e responsiva para os usuários.
 
 ## 🛠 Tecnologias Utilizadas
 - **Angular 19**
 - **TypeScript**
 - **Angular Material** (ou outra biblioteca de UI, se aplicável)
-- **RxJS**
 - **PostgreSQL** (conectado via API backend)
 
 ## 📂 Estrutura do Projeto
@@ -78,9 +77,6 @@ export const environment = {
 - [x] Integração com a API backend
 - [x] Design responsivo e acessível
 
-
----
-📝 **Licença:** Este projeto está sob a licença [MIT](LICENSE).
 
 
 
